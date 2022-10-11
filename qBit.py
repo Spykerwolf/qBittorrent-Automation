@@ -7,7 +7,7 @@ import time
 repeat = 1
 while repeat == 1:
     #Errored torrents
-    urlErrored = 'http://192.168.1.224:8080/api/v2/torrents/info?filter=errored&category=test'
+    urlErrored = 'http://192.168.1.224:8080/api/v2/torrents/info?filter=errored'
     hashesErrored = (jq.compile(".[] | .hash").input(requests.get(urlErrored).json()).text()).replace('"', '').split()
     namesErrored = (jq.compile(".[] | .name").input(requests.get(urlErrored).json()).text()).replace('"', '')
 
