@@ -4,16 +4,23 @@ qb.login()
 import time
 
 while True:
-
     hashes = []
-    completedTorrents = qb.torrents(filter='completed', category='RARBG')
+    all = qb.torrents()
+    completed = qb.torrents(filter='completed', category='RARBG')
+    VR = qb.torrents(filter='completed', category='VR')
+    stalled= qb.torrents(filter="stalled")
+    
+    if stalled:
+        for torrent in stalled:
+            if torrent['num_seeds'] == 0: 
+                hashes.append(torrent['hash'])
+                print("Deleted: " + torrent['name'] + " - 0 seeds")
+        qb.delete(hashes)
 
-    if completedTorrents:
-        for torrent in completedTorrents:
-            hashes.append(torrent['hash'])
-        print("Deleting the following torrents: \n" + torrent['name'])
+    if completed or VR:
+        for torrent in completed or VR:
+                hashes.append(torrent['hash'])
+                print("Deleted: " + torrent['name'] + " - finished downloading")
         qb.delete(hashes)
     else:
-        print("Nothing more to delete, waiting...")
-    
-    time.sleep(300)
+        time.sleep(300)
